@@ -40,3 +40,5 @@ func TraceList(head *structs.ListNode) {
 		next = next.Next
 	}
 }
+
+

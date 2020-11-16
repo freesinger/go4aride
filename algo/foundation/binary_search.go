@@ -1,4 +1,4 @@
-package algo
+package foundation
 
 import (
 	"fmt"
