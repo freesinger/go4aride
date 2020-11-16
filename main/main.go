@@ -8,6 +8,7 @@ import (
 var testArray = []int{4, 123, 13, 214, 33, 344, 222, 3, 9, 220}
 
 func main() {
+	// Test for create/remove/trace func
 	head := tools.CreateLinkedList(testArray)
 	head = list.RemoveKth(head, 4)
 	tools.TraceList(head)
