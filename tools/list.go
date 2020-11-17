@@ -7,7 +7,7 @@ import (
 )
 
 /**
-Create a linked list
+层序构建一个单链表
 */
 func CreateLinkedList(a []int) *structs.ListNode {
 	if len(a) == 0 {
@@ -27,7 +27,7 @@ func CreateLinkedList(a []int) *structs.ListNode {
 }
 
 /**
-Trace a single list
+遍历单链表
 */
 func TraceList(head *structs.ListNode) {
 	if head == nil {
@@ -40,5 +40,3 @@ func TraceList(head *structs.ListNode) {
 		next = next.Next
 	}
 }
-
-

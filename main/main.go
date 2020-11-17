@@ -1,9 +1,6 @@
 package main
 
-import (
-	"fmt"
-	"github.com/freesinger/go4aride/structs"
-)
+import "github.com/freesinger/go4aride/tools"
 
 var testArray = []int{4, 123, 13, 214, 33, -1, 344, 222, 3, 9, 220}
 var demo = []int{1, 2, 3, 4, 5, 6, 7}
@@ -20,7 +17,8 @@ func main() {
 		Test for construct/trace btree
 	*/
 	//root := tools.ConstructBTree(testArray)
-	//tools.TraceBTree(root)
+	root := tools.ConstructBTreeRecurs(demo, 0, len(demo)-1)
+	tools.TraceBTree(root)
 
 	/*
 		Test for stack opts
@@ -39,16 +37,16 @@ func main() {
 	/*
 		Test for queue opts
 	*/
-	var q = structs.NewCapQueue(20)
-	for _, e := range testArray {
-		q.Offer(e)
-	}
-	size := q.Size()
-	fmt.Println(size)
-	q.Dequeue()
-	fmt.Printf("%d\n", q.Peek())
-	size = q.Size()
-	for i := 0; i < size; i++ {
-		fmt.Printf("%d ", q.Dequeue())
-	}
+	//var q = structs.NewCapQueue(20)
+	//for _, e := range testArray {
+	//	q.Offer(e)
+	//}
+	//size := q.Size()
+	//fmt.Println(size)
+	//q.Dequeue()
+	//fmt.Printf("%d\n", q.Peek())
+	//size = q.Size()
+	//for i := 0; i < size; i++ {
+	//	fmt.Printf("%d ", q.Dequeue())
+	//}
 }

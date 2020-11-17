@@ -6,6 +6,25 @@ import (
 	"syscall"
 )
 
+func ConstructBTreeRecurs(a []int, l, r int) *structs.BTreeNode {
+	if len(a) == 0 {
+		fmt.Println("Null array")
+		syscall.Exit(-1)
+	}
+	if l > r {
+		var node *structs.BTreeNode = nil
+		return node
+	}
+	mid := l + (r-l)/2
+	root := &structs.BTreeNode{
+		Val: a[mid],
+	}
+	root.Left = ConstructBTreeRecurs(a, l, mid-1)
+	root.Right = ConstructBTreeRecurs(a, mid+1, r)
+
+	return root
+}
+
 /**
 Construct a binary tree
 -1 note nil child
@@ -45,7 +64,7 @@ func ConstructBTree(a []int) *structs.BTreeNode {
 /**
 层序遍历二叉树
 用slice实现fifo queue
- */
+*/
 func TraceBTree(root *structs.BTreeNode) []int {
 	list := make([]int, 0)
 	queue := make([]*structs.BTreeNode, 0)
