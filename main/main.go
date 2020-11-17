@@ -25,27 +25,30 @@ func main() {
 	/*
 		Test for stack opts
 	*/
-	var s = structs.NewCapStack(20)
-	for _, e := range testArray {
-		s.Push(e)
-	}
-	size := s.Size()
-	fmt.Println(size)
-	fmt.Printf("%d\n", s.Peek())
-	for i := 0; i < size; i++ {
-		fmt.Printf("%d ", s.Pop())
-	}
-
-	//var q = structs.NewCapQueue(20)
+	//var s = structs.NewCapStack(20)
 	//for _, e := range testArray {
-	//	q.Offer(e)
+	//	s.Push(e)
 	//}
-	//size := q.Size()
+	//size := s.Size()
 	//fmt.Println(size)
-	//q.Dequeue()
-	//fmt.Printf("%d\n", q.Peek())
-	//size = q.Size()
+	//fmt.Printf("%d\n", s.Peek())
 	//for i := 0; i < size; i++ {
-	//	fmt.Printf("%d ", q.Dequeue())
+	//	fmt.Printf("%d ", s.Pop())
 	//}
- }
+
+	/*
+		Test for queue opts
+	*/
+	var q = structs.NewCapQueue(20)
+	for _, e := range testArray {
+		q.Offer(e)
+	}
+	size := q.Size()
+	fmt.Println(size)
+	q.Dequeue()
+	fmt.Printf("%d\n", q.Peek())
+	size = q.Size()
+	for i := 0; i < size; i++ {
+		fmt.Printf("%d ", q.Dequeue())
+	}
+}

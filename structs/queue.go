@@ -2,6 +2,9 @@ package structs
 
 import "container/list"
 
+/**
+list容器实现的queue
+ */
 type Queue struct {
 	container *list.List
 	capacity  int
@@ -55,7 +58,7 @@ func (q *Queue) Size() int {
 func (q *Queue) Peek() interface{} {
 	var firstItem *list.Element = nil
 
-	if q.Size() > 0 {
+	if q.container.Front() != nil {
 		firstItem = q.container.Front()
 	}
 
