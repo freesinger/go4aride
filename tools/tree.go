@@ -3,24 +3,31 @@ package tools
 import (
 	"fmt"
 	"github.com/freesinger/go4aride/structs"
+	"sort"
 	"syscall"
 )
 
-func ConstructBTreeRecurs(a []int, l, r int) *structs.BTreeNode {
+/*
+递归构建BST
+不支持null节点
+*/
+func ConstructBST(a []int, l, r int) *structs.BTreeNode {
 	if len(a) == 0 {
 		fmt.Println("Null array")
 		syscall.Exit(-1)
 	}
+
+	sort.Ints(a)
+	mid := l + (r-l)/2
 	if l > r {
 		var node *structs.BTreeNode = nil
 		return node
 	}
-	mid := l + (r-l)/2
 	root := &structs.BTreeNode{
 		Val: a[mid],
 	}
-	root.Left = ConstructBTreeRecurs(a, l, mid-1)
-	root.Right = ConstructBTreeRecurs(a, mid+1, r)
+	root.Left = ConstructBST(a, l, mid-1)
+	root.Right = ConstructBST(a, mid+1, r)
 
 	return root
 }
@@ -86,5 +93,6 @@ func TraceBTree(root *structs.BTreeNode) []int {
 		}
 	}
 	fmt.Println(list)
+
 	return list
 }

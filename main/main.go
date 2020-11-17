@@ -17,7 +17,12 @@ func main() {
 		Test for construct/trace btree
 	*/
 	//root := tools.ConstructBTree(testArray)
-	root := tools.ConstructBTreeRecurs(demo, 0, len(demo)-1)
+	//tools.TraceBTree(root)
+
+	/*
+	   Test for construct bst
+	*/
+	root := tools.ConstructBST(testArray, 0, len(testArray)-1)
 	tools.TraceBTree(root)
 
 	/*
