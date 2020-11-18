@@ -8,3 +8,8 @@ import (
 func TestPrint(t *testing.T) {
 	concurrent.Print()
 }
+
+// Deadlock
+func TestSleep(t *testing.T) {
+	concurrent.Sleep()
+}

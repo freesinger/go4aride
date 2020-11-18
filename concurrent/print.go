@@ -26,3 +26,13 @@ func Print() {
 	go ConPrint("Ann", 10)
 	wg.Wait()
 }
+
+func Sleep()  {
+	wg.Add(1)
+	go func() {
+		//
+		time.Sleep(time.Second * 2)
+		wg.Wait()
+	}()
+	wg.Wait()
+}
