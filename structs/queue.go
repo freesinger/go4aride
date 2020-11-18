@@ -4,7 +4,7 @@ import "container/list"
 
 /**
 list容器实现的queue
- */
+*/
 type Queue struct {
 	container *list.List
 	capacity  int
@@ -63,4 +63,8 @@ func (q *Queue) Peek() interface{} {
 	}
 
 	return firstItem.Value
- }
+}
+
+func (q *Queue) IsEmpty() bool {
+	return q.Size() <= 0
+}

@@ -75,8 +75,8 @@ func ConstructBTree(a []int) *structs.BTreeNode {
 func TraceBTree(root *structs.BTreeNode) []int {
 	list := make([]int, 0)
 	queue := make([]*structs.BTreeNode, 0)
-	queue = append(queue, root)
 
+	queue = append(queue, root)
 	for len(queue) > 0 {
 		size := len(queue)
 		for size > 0 {
@@ -93,6 +93,31 @@ func TraceBTree(root *structs.BTreeNode) []int {
 		}
 	}
 	fmt.Println(list)
+
+	return list
+}
+
+func TraceBtreeUsingQueue(root *structs.BTreeNode) interface{} {
+	var list = make([]int, 0)
+	var q = structs.NewCapQueue(10)
+	// var s = time.Now().Nanosecond()
+
+	q.Offer(root)
+	for !q.IsEmpty() {
+		// interface{}类型需要转换
+		var head = q.Dequeue().(*structs.BTreeNode)
+
+		list = append(list, head.Val)
+		if head.Left != nil {
+			q.Offer(head.Left)
+		}
+		if head.Right != nil {
+			q.Offer(head.Right)
+		}
+	}
+	fmt.Println(list)
+	// fmt.Printf("%T\n", s)
+	// fmt.Printf("Elapsed: %d ms\n", (time.Now().Nanosecond() - s) / 1000)
 
 	return list
 }
