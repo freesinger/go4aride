@@ -99,7 +99,7 @@ func TraceBTree(root *structs.BTreeNode) []int {
 
 func TraceBtreeUsingQueue(root *structs.BTreeNode) interface{} {
 	var list = make([]int, 0)
-	var q = structs.NewCapQueue(10)
+	var q = NewCapQueue(10)
 	// var s = time.Now().Nanosecond()
 
 	q.Offer(root)
