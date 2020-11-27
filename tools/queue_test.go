@@ -1,15 +1,14 @@
-package structs_test
+package tools
 
 import (
 	"fmt"
-	"github.com/freesinger/go4aride/test"
-	"github.com/freesinger/go4aride/tools"
+	"github.com/freesinger/go4aride/consts"
 	"testing"
 )
 
 func TestQueueOpts(t *testing.T) {
-	var q = tools.NewCapQueue(20)
-	for _, e := range test.TestArray {
+	var q = NewCapQueue(20)
+	for _, e := range consts.TestArray {
 		q.Offer(e)
 	}
 	size := q.Size()

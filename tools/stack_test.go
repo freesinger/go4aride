@@ -1,16 +1,15 @@
-package structs_test
+package tools
 
 import (
 	"fmt"
-	"github.com/freesinger/go4aride/test"
-	"github.com/freesinger/go4aride/tools"
+	"github.com/freesinger/go4aride/consts"
 	"testing"
 )
 
 func TestStackOpts(t *testing.T) {
-	var s = tools.NewCapStack(20)
+	var s = NewCapStack(20)
 
-	for _, e := range test.TestArray {
+	for _, e := range consts.TestArray {
 		s.Push(e)
 	}
 	size := s.Size()
