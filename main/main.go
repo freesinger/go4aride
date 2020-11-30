@@ -1,7 +1,8 @@
 package main
 
-import "github.com/freesinger/go4aride/concurrent"
+import "github.com/freesinger/go4aride/server"
 
 func main() {
-	concurrent.Spin()
+	//concurrent.Spin()
+	server.ClockServer()
 }
