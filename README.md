@@ -1,3 +1,3 @@
 # go4aride
 
-Some data structures and algo in Go.
+Some data structures and algo.
