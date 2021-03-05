@@ -37,3 +37,7 @@ func TestGet(t *testing.T) {
 		ExpectEqual(expected[i], results[i].String())
 	}
 }
+
+func TestString(t *testing.T) {
+
+}
