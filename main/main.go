@@ -1,19 +1,18 @@
 package main
 
 import (
-	"fmt"
 	"github.com/freesinger/go4aride/json"
 	"github.com/freesinger/go4aride/utils"
 )
 
 func main() {
-	jsonDoc := `[
+	const jsonDoc = `[
     [{"first": "Dale", "last": "Murphy", "age": 44, "nets": ["ig", "fb", "tw"]},
     {"first": "Roger", "last": "Craig", "age": 68, "nets": ["fb", "tw"]}],
     {"first": "Jane", "last": "Murphy", "age": 47, "nets": ["ig", "tw"]}
   ]
 }`
-	jsonDoc1 := `{
+	const jsonDoc1 = `{
   "t": {
     "$date": "2020-05-20T19:18:40.604+00:00"
  },
@@ -22,7 +21,7 @@ func main() {
   "c": "NETWORK",
   "fav.movie": "Deer Hunter",
   "id": 51800,
-  "friends": [
+  "f": [
     [{"first": "Dale", "last": "Murphy", "age": 44, "nets": ["ig", "fb", "tw"]},
     {"first": "Roger", "last": "Craig", "age": 68, "nets": ["fb", "tw"]}],
     {"first": "Jane", "last": "Murphy", "age": 47, "nets": ["ig", "tw"]}
@@ -51,21 +50,25 @@ func main() {
   "tags": ["1", "2", "3"],
   "array": [[1],2,3,[4,5,6]]
 }`
+	const json3  = `{"array": [[1],2,3,[4,5,6]]}`
 	//fmt.Println(strings.Split(".a.v.c.x[1]", "."))
-	//res := json.Get(jsonDoc, "$[0][1].last")
-	res := json.Get(jsonDoc, "$0.1.last")
-	utils.ExpectEqual("Craig", res.String())
-	//res1 := json.Get(jsonDoc, "$.friends[0][1].last")
-	//utils.ExpectEqual("Craig", res1.String())
-	paths := []string{"$.fav\\.movie", "$.friends.0.1.last","$.friends[1].last", "$.friends.2.nets.0", "$.attr.doc.driver.name", "$.array.3.2"}
-	expected := []string{"Deer Hunter", "Craig", "ig", "MongoDB Internal Client", "6"}
-	//results := json.GetMany(jsonDoc, paths...)
+	//res := json.Extract(jsonDoc, "$[0][1].last")
+	//res := json.Extract(jsonDoc, "$.0.1.last")
+	//utils.ExpectEqual("Craig", res.String())
+	res2 := json.Extract(jsonDoc1, "$.tags[0]")
+	utils.ExpectEqual("1", res2.String())
+	r := json.Extract(json3, "$.array[3][2]")
+	utils.ExpectEqual("6", r.String())
+	res1 := json.Extract(jsonDoc, "$[0][1].last")
+	utils.ExpectEqual("Craig", res1.String())
+
+	paths := []string{"$.fav\\.movie", "$.f[0][1].last","$.f[1].last", "$.f[2].nets[0", "$.attr.doc.driver.name", "$.array.3.2"}
+	expected := []string{"Deer Hunter", "Craig", "Murphy", "","MongoDB Internal Client", "6"}
+	//results := json.ExtractMany(jsonDoc, paths...)
 	//utils.ExpectEqual(len(results), len(paths))
-	// log.Printf("%v\n", gjson.GetMany(json, paths...))
+	// log.Printf("%v\n", gjson.ExtractMany(json, paths...))
 	for i, path := range paths {
-		result := json.Get(jsonDoc1, path)
+		result := json.Extract(jsonDoc1, path)
 		utils.ExpectEqual(expected[i], result.String())
 	}
-	fmt.Println(json.Get(jsonDoc, "bar"))
-
 }
