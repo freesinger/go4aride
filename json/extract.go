@@ -424,7 +424,7 @@ type parseContext struct {
 // Invalid json will not panic, but it may return back unexpected results.
 // If you are consuming JSON from an unpredictable source then you may want to
 // use the Valid function first.
-func Extract(json, path string) Result {
+func JsonExtract(json, path string) Result {
 	path = resolvePath(path)
 	var i int
 	var c = &parseContext{json: json}

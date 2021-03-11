@@ -1,10 +1,81 @@
 package json
 
 import (
-	"github.com/freesinger/go4aride/utils"
+	"log"
+	"reflect"
+	"runtime"
 	"testing"
 )
-const dbLog = `{
+
+func ExpectEqual(alert func(format string, args ...interface{}),
+	expected interface{}, actual interface{}) bool {
+	expectedValue, actualValue := reflect.ValueOf(expected), reflect.ValueOf(actual)
+	equal := false
+	switch {
+	case expected == nil && actual == nil:
+		return true
+	case expected != nil && actual == nil:
+		equal = expectedValue.IsNil()
+	case expected == nil && actual != nil:
+		equal = actualValue.IsNil()
+	default:
+		if actualType := reflect.TypeOf(actual); actualType != nil {
+			if expectedValue.IsValid() && expectedValue.Type().ConvertibleTo(actualType) {
+				equal = reflect.DeepEqual(expectedValue.Convert(actualType).Interface(), actual)
+			}
+		}
+	}
+	if !equal {
+		_, file, line, _ := runtime.Caller(1)
+		alert("%s:%d: mismatch, expect %v but %v", file, line, expected, actual)
+		return false
+	} else {
+		log.Printf("expect %v got %v", expected, actual)
+	}
+	return true
+}
+
+var nestedArray string = `[
+    [{"first": "Dale", "last": "Murphy", "age": 44, "nets": ["ig", "fb", "tw"]},
+    {"first": "Roger", "last": "Craig", "age": 68, "nets": ["fb", "tw"]}],
+    {"first": "Jane", "last": "Murphy", "age": 47, "nets": ["ig", "tw"]}
+]`
+
+var simpleLog string = `[[1],2,3,[4,5,6]]`
+
+func TestParseArray(t *testing.T) {
+	paths := []string{
+		"$[0]",
+		"$[2]",
+		"$[3][1]",
+		"$[0][1]",
+		"$[0][0].last",
+		"$[0][1].age",
+		"$[0][1].nets[1]",
+		"$[1].nets",
+	}
+	expected := []string{
+		"[1]",
+		"3",
+		"5",
+		"{\"first\": \"Roger\", \"last\": \"Craig\", \"age\": 68, \"nets\": [\"fb\", \"tw\"]}",
+		"Murphy",
+		"68",
+		"\"tw\"",
+		"[\"ig\", \"tw\"]",
+	}
+	for i := range paths {
+		if i < 3 {
+			actual := JsonExtract(simpleLog, paths[i]).String()
+			ExpectEqual(t.Errorf, expected[i], actual)
+		} else {
+			actual := JsonExtract(nestedArray, paths[i]).String()
+			ExpectEqual(t.Errorf, expected[i], actual)
+		}
+	}
+}
+
+var dbLog string = `{
   "t": {"$date": "2020-05-20T19:18:40.604+00:00"},
   "s": "I",
   "c": "NETWORK",
@@ -40,7 +111,7 @@ const dbLog = `{
   "array": [[1],2,3,[4,5,6]]
 }`
 
-func TestParseKeys(t *testing.T) {
+func TestParseObject(t *testing.T) {
 	paths := []string{
 		"$.t",
 		"$.t.$date",
@@ -52,7 +123,7 @@ func TestParseKeys(t *testing.T) {
 		"$.tags[2]",
 		"$.array",
 	}
-	results := []string{
+	expected := []string{
 		"{\"$date\": \"2020-05-20T19:18:40.604+00:00\"}",
 		"2020-05-20T19:18:40.604+00:00",
 		"51800",
@@ -64,37 +135,7 @@ func TestParseKeys(t *testing.T) {
 		"[[1],2,3,[4,5,6]]",
 	}
 	for i := range paths {
-		utils.ExpectEqual(results[i], Extract(dbLog, paths[i]).String())
+		actual := JsonExtract(dbLog, paths[i]).String()
+		ExpectEqual(t.Errorf, expected[i], actual)
 	}
-}
-
-const nestedArray = `[
-    [{"first": "Dale", "last": "Murphy", "age": 44, "nets": ["ig", "fb", "tw"]},
-    {"first": "Roger", "last": "Craig", "age": 68, "nets": ["fb", "tw"]}],
-    {"first": "Jane", "last": "Murphy", "age": 47, "nets": ["ig", "tw"]}]`
-const simpleLog = `[[1],2,3,[4,5,6]]`
-func TestParseArray(t *testing.T) {
-	paths := []string{
-		"$[0]",
-		"$[2]",
-		"$[3][1]",
-		"$[]",
-	}
-	results := []string{
-		"[1]",
-		"3",
-		"5",
-	}
-	for i := range paths {
-		if i < 3 {
-			utils.ExpectEqual(results[i], Extract(simpleLog, paths[i]).String())
-		} else {
-
-		}
-	}
-}
-
-func TestUnescapeString(t *testing.T) {
-	path := `{"tags": ["1", "2", "3"]}`
-	utils.ExpectEqual("\"3\"", Extract(path, "$.tags[2]").String())
 }
